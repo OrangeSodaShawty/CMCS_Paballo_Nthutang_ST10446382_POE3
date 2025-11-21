@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "HR Dashboard";
+}
+
+<h2 class="mb-4">HR Dashboard</h2>
+
+<div class="list-group">
+    <a href="/Claims/HR" class="list-group-item list-group-item-action">
+        ➤ View Final Approved Claims
+    </a>
+
+    <a href="/Claims/ExportExcel" class="list-group-item list-group-item-action">
+        ➤ Export Approved Claims to Excel
+    </a>
+
+    <form asp-controller="Account" asp-action="Logout" method="post" class="mt-3">
+        <button class="btn btn-danger">Logout</button>
+    </form>
+</div>

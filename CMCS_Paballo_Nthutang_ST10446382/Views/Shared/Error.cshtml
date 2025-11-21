@@ -1,0 +1,31 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1 class="text-danger">Error.</h1>
+<h2 class="text-danger">An error occurred while processing your request.</h2>
+
+@if (Model.ShowRequestId)
+{
+    <p>
+        <strong>Request ID:</strong> <code>@Model.RequestId</code>
+    </p>
+}
+
+<p>
+    <strong>We're sorry for the inconvenience.</strong><br />
+    Please try again later or contact support if the problem persists.
+</p>
+
+@if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+{
+    <details>
+        <summary>Click for details (Development only)</summary>
+        @if (Model.Exception != null)
+        {
+            <h4>@Model.Exception.Message</h4>
+            <pre>@Model.Exception.StackTrace</pre>
+        }
+    </details>
+}

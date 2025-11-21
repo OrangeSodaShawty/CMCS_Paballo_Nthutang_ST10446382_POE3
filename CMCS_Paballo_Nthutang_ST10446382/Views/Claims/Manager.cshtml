@@ -1,0 +1,48 @@
+﻿@model IEnumerable<CMCS_Paballo_Nthutang_ST10446382.Models.Claim>
+
+<h2>Coordinator Approved Claims</h2>
+
+@if (!Model.Any())
+{
+    <p>No coordinator-approved claims available.</p>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Lecturer</th>
+                <th>Hours</th>
+                <th>Rate</th>
+                <th>Total</th>
+                <th>Documents</th>
+                <th>Approve</th>
+                <th>Reject</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var claim in Model)
+            {
+                <tr>
+                    <td>@claim.Id</td>
+                    <td>@claim.Lecturer?.Email</td>
+                    <td>@claim.HoursWorked</td>
+                    <td>R@(claim.HourlyRate)</td>
+                    <td>R@(claim.TotalAmount)</td>
+                    <td>@claim.Documents.Count file(s)</td>
+                    <td>
+                        <form asp-action="Approve" asp-route-id="@claim.Id" method="post">
+                            <button class="btn btn-success btn-sm">Approve</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form asp-action="Reject" asp-route-id="@claim.Id" method="post">
+                            <button class="btn btn-danger btn-sm">Reject</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

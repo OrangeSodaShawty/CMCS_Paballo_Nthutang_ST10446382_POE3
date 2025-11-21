@@ -1,0 +1,21 @@
+﻿@model IEnumerable<CMCS_Paballo_Nthutang_ST10446382.Models.Claim>
+@{
+    ViewData["Title"] = "HR Dashboard - Paballo Nthutang ST10446382";
+}
+<h2>Approved Claims – Ready for Payment</h2>
+<a asp-action="ExportExcel" class="btn btn-primary mb-3">Export to Excel</a>
+<table class="table">
+    <thead><tr><th>Lecturer</th><th>Hours</th><th>Rate</th><th>Total</th><th>Date</th></tr></thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.Lecturer?.FullName</td>
+                <td>@c.HoursWorked</td>
+                <td>@($"R{c.HourlyRate:F2}")</td>
+                <td>@($"R{c.TotalAmount:F2}")</td>
+                <td>@c.SubmittedDate.ToString("yyyy-MM-dd")</td>
+            </tr>
+        }
+    </tbody>
+</table>

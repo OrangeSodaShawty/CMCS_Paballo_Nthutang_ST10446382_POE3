@@ -1,0 +1,50 @@
+﻿@model IEnumerable<CMCS_Paballo_Nthutang_ST10446382.Models.Claim>
+
+@{
+    ViewData["Title"] = "Pending Claims - Coordinator";
+}
+
+<h2>Pending Claims for Verification</h2>
+
+@if (!Model.Any())
+{
+    <p>No pending claims.</p>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Lecturer</th>
+                <th>Hours</th>
+                <th>Rate</th>
+                <th>Total</th>
+                <th>Documents</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var claim in Model)
+            {
+                <tr>
+                    <td>@claim.Id</td>
+                    <td>@claim.Lecturer?.Email</td>
+                    <td>@claim.HoursWorked</td>
+                    <td>R@(claim.HourlyRate)</td>
+                    <td>R@(claim.TotalAmount)</td>
+                    <td>@claim.Documents.Count file(s)</td>
+                    <td>
+                        <form asp-action="Approve" asp-route-id="@claim.Id" method="post" class="d-inline">
+                            <button class="btn btn-success btn-sm">Approve</button>
+                        </form>
+
+                        <form asp-action="Reject" asp-route-id="@claim.Id" method="post" class="d-inline ms-1">
+                            <button class="btn btn-danger btn-sm">Reject</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

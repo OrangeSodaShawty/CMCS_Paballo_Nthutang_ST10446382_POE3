@@ -1,0 +1,74 @@
+﻿@model IEnumerable<CMCS_Paballo_Nthutang_ST10446382.Models.Claim>
+@{
+    ViewData["Title"] = "My Claims - Paballo Nthutang ST10446382";
+}
+
+<h2>My Submitted Claims</h2>
+
+@if (!Model.Any())
+{
+    <p>You have not submitted any claims yet.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Hours Worked</th>
+                <th>Hourly Rate</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+                <th>Submitted Date</th>
+                <th>Documents</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var claim in Model)
+            {
+                <tr>
+                    <td>@claim.Id</td>
+                    <td>@claim.HoursWorked</td>
+                    <td>@($"R{claim.HourlyRate}")</td>
+                    <td>@($"R{claim.TotalAmount}")</td>
+                    <td>
+                        <span class="badge
+                                    @(claim.Status == "Approved" ? "bg-success" :
+                                                            claim.Status == "Rejected" ? "bg-danger" :
+                                                            claim.Status == "CoordinatorApproved" ? "bg-info" : "bg-warning")">
+                    @claim.Status
+                </span>
+            </td>
+            <td>@claim.SubmittedDate.ToString("yyyy-MM-dd")</td>
+            <td>@claim.Documents.Count file(s)</td>
+        </tr>
+                }
+        </tbody>
+    </table>
+}
+
+@section Scripts {
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/claimHub")
+            .build();
+
+        connection.on("StatusChanged", (claimId, newStatus) => {
+                    const rows = document.querySelectorAll("tbody tr");
+        rows.forEach(row => {
+            const idCell = row.querySelector("td:first-child");
+            if (idCell && idCell.textContent.trim() == claimId) {
+                const badge = row.querySelector('.badge');
+                badge.textContent = newStatus;
+                badge.className = 'badge ' +
+                    (newStatus === 'Approved' ? 'bg-success' :
+                     newStatus === 'Rejected' ? 'bg-danger' :
+                     newStatus === 'CoordinatorApproved' ? 'bg-info' : 'bg-warning');
+            }
+        });
+
+         
+        connection.start().catch(err => console.error(err));
+    </script>
+}

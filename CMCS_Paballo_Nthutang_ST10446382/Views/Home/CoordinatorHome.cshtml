@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Coordinator Dashboard";
+}
+
+<h2 class="mb-4">Coordinator Dashboard</h2>
+
+<div class="list-group">
+    <a asp-controller="Claims" asp-action="Coordinator" class="list-group-item list-group-item-action">
+        ➤ Review Pending Lecturer Claims
+    </a>
+
+    <a href="/Claims/MyClaims" class="list-group-item list-group-item-action">
+        ➤ View My Submitted Claims (if any)
+    </a>
+
+    <form asp-controller="Account" asp-action="Logout" method="post" class="mt-3">
+        <button class="btn btn-danger">Logout</button>
+    </form>
+</div>

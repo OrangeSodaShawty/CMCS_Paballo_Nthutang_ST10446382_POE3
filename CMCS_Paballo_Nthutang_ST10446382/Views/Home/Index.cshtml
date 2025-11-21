@@ -1,0 +1,72 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+@{
+    ViewData["Title"] = "Home - CMCS";
+}
+
+<div class="container mt-4">
+    <h1>Welcome to the Claims Management System</h1>
+    <p>Select an option from the menu to continue.</p>
+
+    <hr />
+
+    @if (!SignInManager.IsSignedIn(User))
+    {
+        <h4>Please log in to continue:</h4>
+        <a class="btn btn-primary" asp-controller="Account" asp-action="Login">Login</a>
+    }
+    else
+    {
+        <h4>Your options:</h4>
+        <ul class="list-group">
+
+            @* Lecturer Options *@
+            @if (User.IsInRole("Lecturer"))
+            {
+                <li class="list-group-item">
+                    <a asp-controller="Claims" asp-action="Submit">Submit Monthly Claim</a>
+                </li>
+                <li class="list-group-item">
+                    <a asp-controller="Claims" asp-action="MyClaims">My Submitted Claims</a>
+                </li>
+            }
+
+            @* Coordinator Options *@
+            @if (User.IsInRole("Coordinator"))
+            {
+                <li class="list-group-item">
+                    <a asp-controller="Claims" asp-action="Coordinator">Coordinator Dashboard (Pending Claims)</a>
+                </li>
+            }
+
+            @* Manager Options *@
+            @if (User.IsInRole("AcademicManager"))
+            {
+                <li class="list-group-item">
+                    <a asp-controller="Claims" asp-action="Manager">Manager Dashboard (Coordinator Approved)</a>
+                </li>
+            }
+
+            @* HR Options *@
+            @if (User.IsInRole("HR"))
+            {
+                <li class="list-group-item">
+                    <a asp-controller="Claims" asp-action="HR">HR Dashboard (Approved Claims)</a>
+                </li>
+                <li class="list-group-item">
+                    <a asp-controller="Claims" asp-action="ExportExcel">Export Approved Claims to Excel</a>
+                </li>
+            }
+
+            @* Logout *@
+            <li class="list-group-item">
+                <form asp-controller="Account" asp-action="Logout" method="post">
+                    <button class="btn btn-danger">Logout</button>
+                </form>
+            </li>
+
+        </ul>
+    }
+</div>
